@@ -3,6 +3,8 @@ package modules.orientdb;
 import java.util.ArrayList;
 import java.util.List;
 
+import modules.orientdb.conf.DBConfiguration;
+
 import play.api.UnexpectedException;
 import scala.Option;
 
@@ -17,7 +19,6 @@ import com.orientechnologies.orient.core.tx.OTransaction.TXTYPE;
 import com.orientechnologies.orient.object.db.OObjectDatabasePool;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 
-import conf.DBConfiguration;
 
 /**
  * This class wraps top level operations to work with an OrientDB Database (Object, Graph, Document)

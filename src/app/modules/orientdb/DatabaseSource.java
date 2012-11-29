@@ -1,10 +1,11 @@
 package modules.orientdb;
 
+import modules.orientdb.conf.DBConfiguration;
+
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.db.graph.OGraphDatabase;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 
-import conf.DBConfiguration;
 
 public class DatabaseSource {  // implements BeanSource
     private final ODatabaseDocumentTx documentDB;

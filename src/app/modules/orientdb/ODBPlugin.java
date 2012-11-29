@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import modules.orientdb.annotation.ODBEntity;
+import modules.orientdb.conf.DBConfiguration;
 import play.Configuration;
 import play.Logger;
 import play.Logger.ALogger;
@@ -39,7 +40,6 @@ import com.orientechnologies.orient.object.serialization.OObjectSerializerHelper
 import com.orientechnologies.orient.server.OServer;
 import com.orientechnologies.orient.server.OServerMain;
 
-import conf.DBConfiguration;
 
 /**
  * The Orient DB plugin
