@@ -1,13 +1,13 @@
 package modules.orientdb.actions;
 
+import modules.orientdb.Model;
 import modules.orientdb.ODB;
-import modules.orientdb.ODBPlugin;
-import modules.orientdb.annotation.ODBWrapper;
+import modules.orientdb.annotation.Transactional;
 import play.mvc.Action;
 import play.mvc.Http;
 import play.mvc.Result;
 
-public class DBActionWrapper extends Action<ODBWrapper>
+public class ODBTransactionWrapper extends Action<Transactional>
 {
     @Override
     public Result call(Http.Context context) throws Throwable
@@ -30,6 +30,7 @@ public class DBActionWrapper extends Action<ODBWrapper>
     }
     
     public void beforeInvocation() {
+    	Model.db().begin();
     	//int dbview = ODBPlugin.getInstance().getConf().openInView;
     	// TODO find out what this was supposed to do.
 //        if (dbview != 0) {

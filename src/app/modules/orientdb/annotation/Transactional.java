@@ -6,23 +6,24 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import play.mvc.With;
+
 import modules.orientdb.ODB.DBTYPE;
+import modules.orientdb.actions.ODBTransactionWrapper;
 
 import com.orientechnologies.orient.core.tx.OTransaction.TXTYPE;
 
 /**
- * This does not work yet.
- * Instead use the Model.db().begin() statement to start a transaction.
- * The transaction will be commited automatically as soon as the method annotated with @DBWrapper ends.
+ * This annotation does not do anything else just 
+ * adds Model.db().begin() statement to start a transaction.
+ * The transaction will be committed automatically as soon as the method annotated with 
+ * @Transactional ends, unless there was an exception, in which case it gets rolled back.
  * 
- * Short answer
- * @author matyas.bene
- *
  */
 @Target(value = { ElementType.METHOD })
 @Retention(value = RetentionPolicy.RUNTIME)
 @Inherited
-@Deprecated
+@With(ODBTransactionWrapper.class)
 public @interface Transactional {
     public DBTYPE db() default DBTYPE.OBJECT;
 
