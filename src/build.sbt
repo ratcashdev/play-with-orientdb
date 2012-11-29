@@ -40,4 +40,4 @@ libraryDependencies += "javax.activation" % "activation" % "1.1.1"
 // The following file is component-only
 // resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/groups/public/"
 
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/public/"

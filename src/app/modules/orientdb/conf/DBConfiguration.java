@@ -1,4 +1,4 @@
-package conf;
+package modules.orientdb.conf;
 
 import play.Configuration;
 
