@@ -74,21 +74,33 @@ public class DBConfiguration {
 	}
 	
     private static String readString(Configuration cfg, String key, String defValue) {
+    	if(cfg == null)
+    		return defValue;
+    	
     	String val = cfg.getString(key);
     	return (val == null) ? defValue : val;
     }
     
     private static String readString(Configuration cfg, ConfigKey key, String defValue) {
+    	if(cfg == null)
+    		return defValue;
+    	
     	String val = cfg.getString(key.getKey());
     	return (val == null) ? defValue : val;
     }
     
     private static boolean readBoolean(Configuration cfg, String key, boolean defValue) {
+    	if(cfg == null)
+    		return defValue;
+    	
     	Boolean val = cfg.getBoolean(key);
     	return (val == null) ? defValue : val;
     }
     
     private static boolean readBoolean(Configuration cfg, ConfigKey key, boolean defValue) {
+    	if(cfg == null)
+    		return defValue;
+    	
     	Boolean val = cfg.getBoolean(key.getKey());
     	return (val == null) ? defValue : val;
     }
