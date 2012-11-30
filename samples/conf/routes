@@ -2,15 +2,10 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-*       /                                       module:crud
-GET     /sample                                 Application.index
-GET     /sample/detail                          Application.detail
+# Home page
+GET     /                           controllers.Application.index()
+GET		/showClient/:id			    controllers.Application.showClient(id : Long)
+GET		/createClients				controllers.Application.createClients(count : Long ?= 0)
 
-# Ignore favicon requests
-GET     /favicon.ico                            404
-
-# Map static resources from the /app/public folder to the /public path
-GET     /public/                                staticDir:public
-
-# Catch all
-*       /{controller}/{action}                  {controller}.{action}
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

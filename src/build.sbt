@@ -1,26 +1,28 @@
-name := "OrientDB Module for Play 2x"
+name := "Play with OrientDB"
 
 version := "1.0-SNAPSHOT"
 
+organization := "ratcash.net"
+
 //scalaVersion := "2.10.0-RC1"
 
-// libraryDependencies += "com.orientechnologies" % "orientdb" % "1.3.0-SNAPSHOT"
+// libraryDependencies += "com.orientechnologies" % "orientdb" % {orientDBVersion}
 
-libraryDependencies += "com.orientechnologies" % "orientdb-core" % "1.3.0-SNAPSHOT"
+libraryDependencies += "com.orientechnologies" % "orientdb-core" % {orientDBVersion}
 
-libraryDependencies += "com.orientechnologies" % "orient-commons" % "1.3.0-SNAPSHOT"
+libraryDependencies += "com.orientechnologies" % "orient-commons" % {orientDBVersion}
 
-libraryDependencies += "com.orientechnologies" % "orientdb-client" % "1.3.0-SNAPSHOT"
+libraryDependencies += "com.orientechnologies" % "orientdb-client" % {orientDBVersion}
 
-libraryDependencies += "com.orientechnologies" % "orientdb-nativeos" % "1.3.0-SNAPSHOT"
+libraryDependencies += "com.orientechnologies" % "orientdb-nativeos" % {orientDBVersion}
  
-libraryDependencies += "com.orientechnologies" % "orientdb-server" % "1.3.0-SNAPSHOT"
+libraryDependencies += "com.orientechnologies" % "orientdb-server" % {orientDBVersion}
  
-libraryDependencies += "com.orientechnologies" % "orientdb-object" % "1.3.0-SNAPSHOT"
+libraryDependencies += "com.orientechnologies" % "orientdb-object" % {orientDBVersion}
 
-libraryDependencies += "com.orientechnologies" % "orientdb-enterprise" % "1.3.0-SNAPSHOT"
+libraryDependencies += "com.orientechnologies" % "orientdb-enterprise" % {orientDBVersion}
 
-libraryDependencies += "com.orientechnologies" % "orientdb-distributed" % "1.3.0-SNAPSHOT"
+libraryDependencies += "com.orientechnologies" % "orientdb-distributed" % {orientDBVersion}
 
 libraryDependencies += "com.hazelcast" % "hazelcast" % "2.1.2"
 
@@ -35,9 +37,5 @@ libraryDependencies += "org.hibernate.javax.persistence" % "hibernate-jpa-2.0-ap
 libraryDependencies += "org.reflections" % "reflections" % "0.9.8"
 
 libraryDependencies += "javax.activation" % "activation" % "1.1.1"
- 
-
-// The following file is component-only
-// resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/groups/public/"
 
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/public/"

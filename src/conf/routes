@@ -1,0 +1,3 @@
+# Empty routes file.
+# This plugin does not need routes.
+GET			/orientDBPlugin/Version							controllers.Application.version()
