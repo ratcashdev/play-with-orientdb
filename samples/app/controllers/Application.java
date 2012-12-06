@@ -2,13 +2,12 @@ package controllers;
 
 import java.util.ArrayList;
 
-import models.MyClient;
 import models.DescribedAddress;
 import models.DescribedString;
+import models.MyClient;
 import models.PostalAddress;
 import modules.orientdb.Model;
 import modules.orientdb.annotation.Transactional;
-import play.Play;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;

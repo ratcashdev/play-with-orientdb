@@ -2,6 +2,7 @@ package modules.orientdb.actions;
 
 import modules.orientdb.Model;
 import modules.orientdb.ODB;
+import modules.orientdb.ODB.DBTYPE;
 import modules.orientdb.annotation.Transactional;
 import play.mvc.Action;
 import play.mvc.Http;
@@ -30,12 +31,10 @@ public class ODBTransactionWrapper extends Action<Transactional>
     }
     
     public void beforeInvocation() {
-    	Model.db().begin();
-    	//int dbview = ODBPlugin.getInstance().getConf().openInView;
-    	// TODO find out what this was supposed to do.
-//        if (dbview != 0) {
-//            Injector.inject(new DatabaseSource(dbview));
-//        }
+    	DBTYPE type = this.getClass().getAnnotation(Transactional.class).db();
+    	if(type == DBTYPE.DOCUMENT || type == DBTYPE.OBJECT)
+    		Model.objectDB().begin();
+
     }
     
     public void invocationFinally() {

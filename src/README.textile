@@ -1,36 +1,31 @@
-h1. OrientDB Module
+h1. Play with OrientDB
 
-OrientDB for Play! Framework 2.0.x
+OrientDB for Play! Framework 2.1.x
 
 h2. Features
 
-* play.db.Model support
-* CRUD support
+* Model support
 * Embedded server for development
-* Injection of database sessions in controllers
 * Annotation-based transaction demarcation
-* Live class-reloading as usual
 * Basic support for RecordHooks and DatabaseListeners
 
 h2. Configuration
 
 These are the default values that you can override in @conf/application.conf@
 
-bc.. # OrientDB Module
+bc.. # OrientDB configuration
 # ~~~~~
-# odb.url=memory:temp
-# odb.user=admin
-# odb.password=admin
-# Separate url for graphDB, if not specified uses odb.url
-# odb.graph.url=memory:temp
-# Path to custom configuration file, in classpath or retalive to conf/ dir
-# odb.config.file=/play/modules/orientdb/db.config
-# Package prefix to scan entities
-# odb.entities.package=models
-# Control open session in view
-# odb.open-in-view.documentdb=true
-# odb.open-in-view.objectdb=true
-# odb.open-in-view.graphdb=false
+#orientdb.db.url = "remote:localhost/MyDB"
+orientdb.db.url = "memory:temp"
+#orientdb.db.url = "local:D:/Downloads/MyDB"
+#orientdb.db.username = "admin"
+#orientdb.db.password = "admin"
+#orientdb.db.graph.url = "memory:temp"
+orientdb.db.config.file = "/conf/db.config"
+orientdb.db.entities.package = "models.*,models.StringWrapper"
+orientdb.db.open-in-view.documentdb = "true"
+orientdb.db.open-in-view.objectdb = "true"
+orientdb.db.open-in-view.graphdb = "true"
 
 p. Note: Please, set odb.open-in-view.[dbtype] to true only for the database types that you want to inject. By default all are enabled.
 
@@ -89,18 +84,17 @@ p. Note: to obtain the ORID call the method @entity.getIdentity()@
 
 h3. Document Database
 
-p. Inject the session in the controller
+p. opoen the database using Model.documentDB()
 
 bc.. public class MyController extends Controller {
 
-    @Inject
     static ODatabaseDocumentTx docdb;
 
     ...
 
     @Transactional(db = DBTYPE.DOCUMENT)
     public static void good() {
-        ODocument doc = new ODocument(docdb, "Account");
+        ODocument doc = Model.documentDB().newDocInstance("Account");
         doc.field("name", "good");
         doc.save();
         index();
@@ -111,11 +105,9 @@ bc.. public class MyController extends Controller {
 p. If you have an entity that maps the document you can obtain an object representation, because OrientDB ODatabaseObject is built on top of ODatabaseDocument
 
 bc.. public class MyController extends Controller {
-    @Inject
-    static ODatabaseObjectTx db;
 
     public static void index() {
-        OObjectIteratorMultiCluster<Account> accounts = db.browseClass(Account.class);
+        OObjectIteratorMultiCluster<Account> accounts = Model.db().browseClass(Account.class);
         render(accounts);
     }
 
@@ -126,9 +118,9 @@ h3. Graph Database
 A simple test:
 
 bc.. public class MyController extends Controller {
-   @Inject static OGraphDatabase database;
 	
    public static void someMethod() {
+   OGraphDatabase database = Model.graphDB();
       OClass vehicleClass = database.createVertexType("GraphVehicle");
       database.createVertexType("GraphCar", vehicleClass);
       database.createVertexType("GraphMotocycle", "GraphVehicle");

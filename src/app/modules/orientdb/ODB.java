@@ -26,7 +26,7 @@ import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 public class ODB {
 
     public enum DBTYPE {
-        DOCUMENT, OBJECT
+        DOCUMENT, OBJECT, GRAPH
     };
 
     public static final List<Class<? extends ODatabaseListener>> listeners = new ArrayList<Class<? extends ODatabaseListener>>();

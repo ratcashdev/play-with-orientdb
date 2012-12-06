@@ -2,9 +2,15 @@ package modules.orientdb;
 
 import java.util.List;
 
+import modules.orientdb.ODB.DBTYPE;
+
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.core.db.graph.OGraphDatabase;
 import com.orientechnologies.orient.core.exception.ORecordNotFoundException;
+import com.orientechnologies.orient.core.hook.ORecordHook.TYPE;
 import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.iterator.object.OObjectIteratorClassInterface;
+import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 
@@ -27,26 +33,70 @@ public abstract class Model {
         throw new UnsupportedOperationException("Model not enhanced.");
     }
 
+    
     /**
-     * Use this for multiple DB operations
-     * Don't forget to .close() at the end.
+     * Synonym for objectDB()
      * @return
      */
     public static OObjectDatabaseTx  db() {
         return ODB.openObjectDB();
     }
-
+    
     /**
-     * This creates a proxied object istance
+     * Opens a thread-local ObjectDatabase from the pool.
+     * The DB is kept open until the method annotated with @Transactional finishes
+     * or close() is called.
+     * @return
+     */
+    public static OObjectDatabaseTx  objectDB() {
+        return ODB.openObjectDB();
+    }
+    
+    /**
+     * Opens a thread-local graphDB instance from the pool.
+     * @return
+     */
+    public static OGraphDatabase  graphDB() {
+        return ODB.openGraphDB();
+    }
+    
+    /**
+     * Opens a thread-local DocumentDB instance from the pool.
+     * @return
+     */
+    public static ODatabaseDocumentTx  documentDB() {
+        return ODB.openDocumentDB();
+    }
+    
+    /**
+     * This creates a proxied POJO object instance
      * @param clazz
      * @return
      */
-    public static <T> T newInstance(Class<T> clazz) {
-    	return db().newInstance(clazz);
+    public static <T> T newPojoInstance(Class<T> clazz) {
+    	return objectDB().newInstance(clazz);
+    }
+    
+    /**
+     * This creates a proxied Document instance
+     * @param clazz
+     * @return
+     */
+    public static ODocument newDocInstance(String clazzName) {
+    	return documentDB().newInstance(clazzName);
+    }
+    
+    /**
+     * This creates a proxied Graph document instance
+     * @param clazz
+     * @return
+     */
+    public static ODocument newGraphInstance(String clazzName) {
+    	return graphDB().newInstance(clazzName);
     }
     
     public static <T extends Model> T findByOrid(ORID id) {
-    	return db().load(id);
+    	return objectDB().load(id);
     }
     
     /**
@@ -59,7 +109,7 @@ public abstract class Model {
      * @return A result set
      */
     public static <T extends Model> List<T> find(String query, Object... params) {
-        return db().query(new OSQLSynchQuery<T>(query), params);
+        return objectDB().query(new OSQLSynchQuery<T>(query), params);
     }
     /**
      * Delete all entities
@@ -180,18 +230,18 @@ public abstract class Model {
     @SuppressWarnings("unchecked")
     public static <T extends Model> T findById(ORID id) {
         try {
-            return (T) db().load(id);
+            return (T) objectDB().load(id);
         } catch (ORecordNotFoundException e) {
             return null;
         }
     }
 
     public void _delete() {
-        db().delete(this);
+        objectDB().delete(this);
     }
 
     public ORID _key() {
-    	return db().getIdentity(this);
+    	return objectDB().getIdentity(this);
     }
     
     /**
@@ -235,7 +285,7 @@ public abstract class Model {
     }
 
     public boolean isManaged() {
-        return db().isManaged(this);
+        return objectDB().isManaged(this);
     }
 
     /**
@@ -243,7 +293,7 @@ public abstract class Model {
      */
     @SuppressWarnings("unchecked")
     public <T extends Model> T refresh() {
-        db().reload(this);
+        objectDB().reload(this);
         return (T) this;
     }
 
@@ -252,7 +302,7 @@ public abstract class Model {
      */
     @SuppressWarnings("unchecked")
     public <T extends Model> T save() {
-        return (T) db().save(this);
+        return (T) objectDB().save(this);
     }
 
     @Override

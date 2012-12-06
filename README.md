@@ -1,6 +1,7 @@
 In order to use OrientDB from Play (2.1) you need to &nbsp;do the following:
 
 1. Execute
+
         git clone git@github.com:ratcashdev/play-with-orientdb.git
     to a subfolder under your Play 2.x installation.
 2. Issue "play publish-local" from the play-with-orientdb/src/ folder
