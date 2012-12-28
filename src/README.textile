@@ -1,0 +1,156 @@
+h1. Play with OrientDB
+
+OrientDB for Play! Framework 2.1.x
+
+h2. Features
+
+* Model support
+* Embedded server for development
+* Annotation-based transaction demarcation
+* Basic support for RecordHooks and DatabaseListeners
+
+h2. Configuration
+
+These are the default values that you can override in @conf/application.conf@
+
+bc.. # OrientDB configuration
+# ~~~~~
+#orientdb.db.url = "remote:localhost/MyDB"
+orientdb.db.url = "memory:temp"
+#orientdb.db.url = "local:D:/Downloads/MyDB"
+#orientdb.db.username = "admin"
+#orientdb.db.password = "admin"
+#orientdb.db.graph.url = "memory:temp"
+orientdb.db.config.file = "/conf/db.config"
+orientdb.db.entities.package = "models.*,models.StringWrapper"
+orientdb.db.open-in-view.documentdb = "true"
+orientdb.db.open-in-view.objectdb = "true"
+orientdb.db.open-in-view.graphdb = "true"
+
+p. Note: Please, set odb.open-in-view.[dbtype] to true only for the database types that you want to inject. By default all are enabled.
+
+h2. Basic usage
+
+h3. Object Database
+
+The access to ODatabaseObjectTx is wrapped in Model, so if you don't need direct access simply create an entity that extends play.modules.orientdb.Model
+
+bc.. public class Item extends Model {
+    @SuppressWarnings("unused")
+    @Id
+    private Object id;
+
+    @SuppressWarnings("unused")
+    @Version
+    private Object version;
+
+    @Required
+    public String name;
+
+    public String description;
+}
+
+p. And use that entity on the controller:
+
+bc.. public class MyController extends Controller {
+
+    public static void index() {
+        OObjectIteratorMultiCluster<Item> items = Item.all();
+        render(items);
+    }
+
+    public static void detail(ORecordId id) {
+        Item item = Item.findById(id);
+        notFoundIfNull(item);
+        render(item);
+    }
+
+    @Transactional
+    public static void save(String name, String description) {
+        Item item = new Item();
+        item.name = name;
+        item.description = description;
+        item.save();
+        index();
+    }
+    
+    public static void search(String query) {
+    	List<Item> result = Item.find("select * from Item where name like ?", "%"+query+"%");
+    	render(result);
+    }
+}
+
+p. Note: to obtain the ORID call the method @entity.getIdentity()@
+
+h3. Document Database
+
+p. opoen the database using Model.documentDB()
+
+bc.. public class MyController extends Controller {
+
+    static ODatabaseDocumentTx docdb;
+
+    ...
+
+    @Transactional(db = DBTYPE.DOCUMENT)
+    public static void good() {
+        ODocument doc = Model.documentDB().newDocInstance("Account");
+        doc.field("name", "good");
+        doc.save();
+        index();
+    }
+
+}
+
+p. If you have an entity that maps the document you can obtain an object representation, because OrientDB ODatabaseObject is built on top of ODatabaseDocument
+
+bc.. public class MyController extends Controller {
+
+    public static void index() {
+        OObjectIteratorMultiCluster<Account> accounts = Model.db().browseClass(Account.class);
+        render(accounts);
+    }
+
+}
+
+h3. Graph Database
+
+A simple test:
+
+bc.. public class MyController extends Controller {
+	
+   public static void someMethod() {
+   OGraphDatabase database = Model.graphDB();
+      OClass vehicleClass = database.createVertexType("GraphVehicle");
+      database.createVertexType("GraphCar", vehicleClass);
+      database.createVertexType("GraphMotocycle", "GraphVehicle");
+
+      ODocument carNode = (ODocument) database.createVertex("GraphCar").field("brand", "Hyundai")
+                    .field("model", "Coupe").field("year", 2003).save();
+      ODocument motoNode = (ODocument) database.createVertex("GraphMotocycle").field("brand", "Yamaha")
+                    .field("model", "X-City 250").field("year", 2009).save();
+
+      database.createEdge(carNode, motoNode).save();
+      ...
+   }
+   ...
+}
+
+h3. Direct access
+
+If you need direct access to any ODatabase use play.modules.orientdb.ODB
+
+@ODatabaseDocumentTx docdb = ODB.openDocumentDB();@ 
+
+p. and so on
+
+h3. Hooks and Listeners
+
+To register RecordHooks or DatabaseListeners, implement the proper interface (ORecordHook or ODatabaseListener) and put the code under /app, the module will find and register these classes at startup.
+
+h2. References
+
+* <a href="http://www.orientechnologies.com/orient-db.htm">OrientDB</a>
+* <a href="http://code.google.com/p/orient/wiki/Main">OrientDB documentation</a>
+
+p. //
