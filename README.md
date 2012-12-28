@@ -12,10 +12,11 @@ Next in the project that will use this plugin, do the following:
 1. Add
 
         "ratcash.net" % "play-with-orientdb_2.10" % "1.0-SNAPSHOT"
-    to your Build.scala, under appDependencies (more here ﻿﻿[lg:Working with Play 2.x Plugins])
+    to your Build.scala, under appDependencies.
     Add also
+    
         val orientDBVersion = "1.3.0"
-    to your Build.scala, right after appVersion. This tells the plugin which OrientDB version to use (managed dependency).
+    to your Build.scala, right after appVersion. This tells the plugin which OrientDB version to use (managed dependency). See the Build.scala in the samples/ directory.
 2. Disable EBean in you Build.scala file
 3. Edit
 
