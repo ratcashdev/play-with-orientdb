@@ -9,7 +9,7 @@ object ApplicationBuild extends Build {
 
   // IMPORTANT: this is needed for the OrientDB plugin to know
   // which version of the DB is to be used. This variable is used inside build.sbt
-  val orientDBVersion = "1.3.0-SNAPSHOT"
+  val orientDBVersion = "1.3.0"
 
   val appDependencies = Seq(
     javaCore,
